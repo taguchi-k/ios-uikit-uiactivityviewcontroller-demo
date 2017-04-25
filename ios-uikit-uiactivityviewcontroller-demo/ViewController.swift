@@ -18,6 +18,7 @@ class ViewController: UIViewController {
     @IBAction func didTapSNS(_ sender: UIButton) {
         
         let activityVC = shareText(text: "Share Text")
+        activityVC.completionWithItemsHandler = createHandler()
         self.present(activityVC, animated: true, completion: nil)
     }
     
@@ -62,6 +63,33 @@ class ViewController: UIViewController {
         
         activityViewController.excludedActivityTypes = excludedActivityTypes
         return activityViewController
+    }
+
+
+    /// ActivityViewControllerの完了後に呼ばれるハンドラを作成して返す
+    private func createHandler() -> UIActivityViewControllerCompletionWithItemsHandler? {
+
+        return { (activityType: UIActivityType?, completed: Bool, returnedItems: [Any]?, error: Error?) in
+
+            if let activityType = activityType {
+                print("activityType = \(activityType)")
+            }
+
+            if completed {
+                print("サービス実行完了しました。")
+            } else {
+                // キャンセルしたり、サービス実行完了しなかった場合
+                print("サービス実行完了しませんでした。")
+            }
+
+            if let returnedItems = returnedItems {
+                print("returnedItems: \(returnedItems)")
+            }
+
+            if let error = error {
+                print("error: \(error)")
+            }
+        }
     }
 }
 
